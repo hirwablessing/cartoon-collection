@@ -2,12 +2,12 @@ import { createContext, useReducer } from "react";
 
 interface ContextInterface {
     episodes: [],
-    favourites: [],
+    favourites: []
 }
 
 const initialState: ContextInterface = {
     episodes: [],
-    favourites: [],
+    favourites: []
 }
 
 interface ActionInterfaces {
@@ -28,7 +28,7 @@ function reducer(state: ContextInterface, action: ActionInterfaces): ContextInte
     }
 }
 
-export function StoreProvider(props: any): JSX.Element {
+export function StoreProvider(props: any) {
     //grants all components in our app access to the store
 
     const [state, dispatch] = useReducer(reducer, initialState)
