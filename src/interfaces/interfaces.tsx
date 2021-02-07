@@ -26,3 +26,10 @@ export interface EpisodeInterface {
     type: string
     url: string
 }
+
+export interface PropsInterface {
+    episodes: Array<EpisodeInterface>,
+    handleClickFav: (episode: EpisodeInterface) => ActionInterface,
+    favourites: Array<EpisodeInterface>
+
+}

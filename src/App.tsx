@@ -1,7 +1,9 @@
-import { useContext, useEffect } from "react";
-import { ActionInterface, EpisodeInterface } from "./interfaces/interfaces";
+import { lazy, Suspense, useContext, useEffect } from "react";
+import { ActionInterface, EpisodeInterface, PropsInterface } from "./interfaces/interfaces";
 import { Store } from "./store/Store";
+import { Link } from "@reach/router";
 
+const EpisodesList = lazy(() => import("./components/EpisodesList/EpisodesList"))
 
 
 function App() {
@@ -24,7 +26,7 @@ function App() {
     })
   }
 
-  const handleClickFave = (episode: EpisodeInterface): ActionInterface => {
+  const handleClickFav = (episode: EpisodeInterface): ActionInterface => {
     const episodeInfave = state.favourites.includes(episode);
 
     let dispatchObject = {
@@ -44,6 +46,13 @@ function App() {
     return dispatch(dispatchObject);
   }
 
+
+  const props: PropsInterface = {
+    episodes: state.episodes,
+    handleClickFav: handleClickFav,
+    favourites: state.favourites
+  }
+
   console.log(state)
   return (
     <>
@@ -52,27 +61,21 @@ function App() {
           <h1>Rick and Morty</h1>
           <p>Choose your favourite episodes</p>
         </div>
+
+        <div>
+          <Link to="/Home">Home</Link>
+          <Link to="/favourites">Favourite</Link>
+        </div>
         <div style={{ marginTop: 50 }}>
           Favourite (s) {state.favourites.length}
         </div>
       </header>
 
-      <section className="episode-layout">
-        {state.episodes.map((episode: EpisodeInterface) => {
-          return (
-            <section className="episode-box" key={episode.id}>
-              <img src={episode.image.medium} alt={`Rick and Morty ${episode.name}`} />
-              <p>{episode.name}</p>
-              <section>
-                <div>Season: {episode.season} Numa: {episode.number}</div>
-                <button key={episode.id} type="button" onClick={() => { handleClickFave(episode) }}>
-                  {state.favourites.find((fav: EpisodeInterface) => fav.id === episode.id) ? "Unfav" : "Fav"}
-                </button>
-              </section>
-            </section>
-          )
-        })}
-      </section>
+      <Suspense fallback={<div>Loading...</div>}>
+        <section className="episode-layout">
+          <EpisodesList {...props} />
+        </section>
+      </Suspense>
     </>
   );
 }
