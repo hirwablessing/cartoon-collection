@@ -1,28 +1,25 @@
 import { createContext, useReducer } from "react";
+import { ActionInterface, ContextInterface } from "../interfaces/interfaces";
 
-interface ContextInterface {
-    episodes: [],
-    favourites: []
-}
 
 const initialState: ContextInterface = {
     episodes: [],
     favourites: []
 }
-
-interface ActionInterfaces {
-    type: string,
-    payload: any
-}
-
 export const Store = createContext<ContextInterface | any>(initialState);
 
 
-function reducer(state: ContextInterface, action: ActionInterfaces): ContextInterface {
+function reducer(state: ContextInterface, action: ActionInterface): ContextInterface {
     //mutates the state
     switch (action.type) {
         case 'FETCH_DATA':
             return { ...state, episodes: action.payload }
+
+        case "ADD_FAV":
+            return { ...state, favourites: [...state.favourites, action.payload] }
+
+        case "REMOVE_FAV":
+            return { ...state, favourites: action.payload }
         default:
             return state;
     }

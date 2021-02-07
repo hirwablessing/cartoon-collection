@@ -20,17 +20,20 @@ body {
 }
 
 .episode-box{
-  padding: 0.5rem;
+  padding: 30px;
 }
 
-.header{
+.header-text{
   display: flex;
-  flex-direction: space-between;
+  justify-content: space-between;
   background: white;
   border-bottom: 1px solid black;
-  padding: 0.5rem;
+  padding: 10px;
   position: sticky;
   top: 0;
+}
+.header-text>p{
+  margin-top: 30px;
 }
 
 

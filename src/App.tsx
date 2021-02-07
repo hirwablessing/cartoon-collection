@@ -1,20 +1,8 @@
 import { useContext, useEffect } from "react";
+import { ActionInterface, EpisodeInterface } from "./interfaces/interfaces";
 import { Store } from "./store/Store";
 
-interface EpisodeInterface {
-  airdate: string
-  airstamp: string
-  airtime: string
-  id: number
-  image: { medium: string, original: string }
-  name: string
-  number: number
-  runtime: number
-  season: number
-  summary: string
-  type: string
-  url: string
-}
+
 
 function App() {
   const { state, dispatch } = useContext(Store);
@@ -36,22 +24,50 @@ function App() {
     })
   }
 
+  const handleClickFave = (episode: EpisodeInterface): ActionInterface => {
+    const episodeInfave = state.favourites.includes(episode);
+
+    let dispatchObject = {
+      type: "ADD_FAV",
+      payload: episode
+    }
+
+    if (episodeInfave) {
+      const favouritesWithEpisode = state.favourites.filter((fav: EpisodeInterface) => fav.id !== episode.id)
+
+      dispatchObject = {
+        type: "REMOVE_FAV",
+        payload: favouritesWithEpisode
+      }
+
+    }
+    return dispatch(dispatchObject);
+  }
+
   console.log(state)
   return (
     <>
-      <header className="header">
-        <h1>Rick and Morty</h1>
-        <p>Choose your favourite episodes</p>
+      <header className="header-text">
+        <div>
+          <h1>Rick and Morty</h1>
+          <p>Choose your favourite episodes</p>
+        </div>
+        <div style={{ marginTop: 50 }}>
+          Favourite (s) {state.favourites.length}
+        </div>
       </header>
 
       <section className="episode-layout">
         {state.episodes.map((episode: EpisodeInterface) => {
           return (
-            <section className="episode-box">
+            <section className="episode-box" key={episode.id}>
               <img src={episode.image.medium} alt={`Rick and Morty ${episode.name}`} />
               <p>{episode.name}</p>
               <section>
-                Season: {episode.season} Numa: {episode.number}
+                <div>Season: {episode.season} Numa: {episode.number}</div>
+                <button key={episode.id} type="button" onClick={() => { handleClickFave(episode) }}>
+                  {state.favourites.find((fav: EpisodeInterface) => fav.id === episode.id) ? "Unfav" : "Fav"}
+                </button>
               </section>
             </section>
           )
