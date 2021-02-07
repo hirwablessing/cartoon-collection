@@ -25,11 +25,11 @@ function reducer(state: ContextInterface, action: ActionInterface): ContextInter
     }
 }
 
-export function StoreProvider(props: any) {
+export function StoreProvider({ children }: JSX.ElementChildrenAttribute) {
     //grants all components in our app access to the store
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    return <Store.Provider value={{ state, dispatch }}>{props.children}</Store.Provider>
+    return <Store.Provider value={{ state, dispatch }}>{children}</Store.Provider>
 }
 

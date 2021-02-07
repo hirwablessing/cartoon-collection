@@ -2,14 +2,17 @@
  * All interfaces are defined here
  */
 
+
+export type Dispatch = React.Dispatch<ActionInterface>
+
 export interface ContextInterface {
-    episodes: Array<any>;
-    favourites: Array<any>
+    episodes: Array<EpisodeInterface>;
+    favourites: Array<EpisodeInterface>
 }
 
 export interface ActionInterface {
     type: string,
-    payload: any
+    payload: Array<EpisodeInterface> | any
 }
 
 export interface EpisodeInterface {
@@ -29,7 +32,8 @@ export interface EpisodeInterface {
 
 export interface PropsInterface {
     episodes: Array<EpisodeInterface>,
-    handleClickFav: (episode: EpisodeInterface) => ActionInterface,
+    store: { state: ContextInterface, dispatch: Dispatch }
+    handleClickFav: (state: ContextInterface, dispatch: Dispatch, episode: EpisodeInterface) => ActionInterface,
     favourites: Array<EpisodeInterface>
 
 }
